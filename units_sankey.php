@@ -1,12 +1,9 @@
 <?php
-/**
- * Componente text
- */
 
 class units_sankey extends base_component implements components_interface {
 	
 	public function make_sankey() : string {
-		global $_ITE, $_ITEC;
+
 		$html = '';
 		ob_start();
 		?>
@@ -16,13 +13,13 @@ class units_sankey extends base_component implements components_interface {
             // Adaptar a config nueva
             $num_levels = (isset($_GET['num_levels']))?$_GET['num_levels']:'1000';
 
-            $levels = $_ITEC -> select ( "levels", '*', ['levels_id[<=]' => $num_levels, 'ORDER' => ['levels_id' => 'ASC']]);
+            $levels = $this -> _ITEC -> select ( "levels", '*', ['levels_id[<=]' => $num_levels, 'ORDER' => ['levels_id' => 'ASC']]);
             if ($levels) {foreach($levels as $level){
-                echo '<section class="col12 m-3 p-3 level text-center" data-ref="'.$level['levels_id'].'" data-name="'.$level['level'].'"><span class="level_name" data-ref="'.$level['levels_id'].'" title="'.$_ITE -> lang -> gt('Editar nombre del nivel').'">'.$level['level'].'</span>';
-                    $units = $_ITEC -> select( "units", '*', ['levels_id' => $level['levels_id'], 'active' => '1', 'ORDER' => ['unit_name' => 'ASC']] );
+                echo '<section class="col12 m-3 p-3 level text-center" data-ref="'.$level['levels_id'].'" data-name="'.$level['level'].'"><span class="level_name" data-ref="'.$level['levels_id'].'" title="'.$this -> _ITE -> lang -> gt('Editar nombre del nivel').'">'.$level['level'].'</span>';
+                    $units = $this -> _ITEC -> select( "units", '*', ['levels_id' => $level['levels_id'], 'active' => '1', 'ORDER' => ['unit_name' => 'ASC']] );
                     if($units) {foreach($units as $unit){
-                        //if(!$_ITE->auth->unitAllowed($unit['units_id'])){continue;}
-                        $parents = $_ITEC -> query("SELECT u.units_id, u.unit_name FROM relationships r, units u WHERE r.units_id = '$unit[units_id]' AND r.parent_id = u.units_id AND DATE(r.end_date) = '2050-01-01' ORDER BY r.relationships_id DESC") -> fetchAll();
+                        
+                        $parents = $this -> _ITEC -> query("SELECT u.units_id, u.unit_name FROM relationships r, units u WHERE r.units_id = '$unit[units_id]' AND r.parent_id = u.units_id AND DATE(r.end_date) = '2050-01-01' ORDER BY r.relationships_id DESC") -> fetchAll();
                         $relations = "";
                         if($parents){
                             foreach($parents as $parent){
@@ -30,7 +27,7 @@ class units_sankey extends base_component implements components_interface {
                             }
                             $relations = substr($relations, 0, -1);
                         }
-                        echo '<div class="box p-3 m-3" data-ref="'.$unit['units_id'].'" data-relationships="'.$relations.'" data-relation-code="'.$unit['units_id'].$unit['unit_name'][0].'"><a href="#" title="'.$_ITE -> lang -> gt('Editar unidad organizativa').'">'.$unit['unit_name'].'</a></div>';
+                        echo '<div class="box p-3 m-3" data-ref="'.$unit['units_id'].'" data-relationships="'.$relations.'" data-relation-code="'.$unit['units_id'].$unit['unit_name'][0].'"><a href="#" title="'.$this -> _ITE -> lang -> gt('Editar unidad organizativa').'">'.$unit['unit_name'].'</a></div>';
                     }}
                 echo '</section>';
             }}
