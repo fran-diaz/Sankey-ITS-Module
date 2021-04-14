@@ -1,0 +1,40 @@
+.level{
+	position:relative;
+	min-height:150px;
+	border:1px solid #f5f5f5;
+}
+.level_name{
+	position:absolute;
+	height:20px;
+	line-height:20px;
+	max-width:150px;
+	text-overflow:ellipsis;
+	top:-20px;
+	padding:0 10px;
+	box-shadow:0 0 2px rgba(0,0,0,.3);
+	font-size:0.75em;
+	font-weight:700;
+	text-transform:uppercase;
+	left:0;
+	cursor:pointer;
+	transform-origin: 0 100%;
+	transform: rotate(90deg);
+}
+
+.box{
+	display: inline-block;
+	min-width:100px;
+	border:1px solid #e5e5e5;
+	text-align:center; 
+}
+
+.line{
+	z-index:15;
+	height:3px;
+	background:#333333;
+	position: absolute;
+	top: 0;
+	left: 0;
+	-webkit-backface-visibility: hidden;
+	transform-origin: 0 50%;
+}
